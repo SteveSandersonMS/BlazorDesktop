@@ -17,11 +17,35 @@ namespace Microsoft.AspNetCore.Components.Desktop
             Console.WriteLine($"Resolving local stream URI {uri}");
 
             var localPath = uri.LocalPath;
-            if (!localPath.StartsWith('/'))
+            var frameworkPrefix = "/_framework/";
+            if (localPath.StartsWith(frameworkPrefix))
+            {
+                return SupplyFrameworkFile(uri, localPath.Substring(frameworkPrefix.Length));
+            }
+            else if (localPath.StartsWith('/'))
+            {
+                return SupplyContentFile(uri, localPath.Substring(1));
+            }
+            else
             {
                 throw new ArgumentException($"Expected local path to start with '/', but received value '{uri.LocalPath}'");
             }
-            localPath = localPath.Substring(1).Replace('/', Path.DirectorySeparatorChar);
+        }
+
+        private Stream SupplyFrameworkFile(Uri uri, string localPath)
+        {
+            switch (localPath)
+            {
+                case "blazor.desktop.js":
+                    return typeof(ContentRootResolver).Assembly.GetManifestResourceStream("Microsoft.AspNetCore.Components.Desktop.blazor.desktop.js");
+                default:
+                    throw new ArgumentException($"Unknown framework file: {uri}");
+            }
+        }
+
+        private Stream SupplyContentFile(Uri uri, string localPath)
+        {
+            localPath = localPath.Replace('/', Path.DirectorySeparatorChar);
 
             var root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var filePath = Path.Combine(root, "wwwroot", localPath);

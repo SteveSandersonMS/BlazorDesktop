@@ -7,6 +7,8 @@ import { renderBatch } from '@browserjs/Rendering/Renderer';
 import { decode } from 'base64-arraybuffer';
 
 function boot() {
+  throw new Error('Hello from boot');
+
   setEventDispatcher((eventDescriptor, eventArgs) => DotNet.invokeMethodAsync('Microsoft.AspNetCore.Components.Electron', 'DispatchEvent', eventDescriptor, JSON.stringify(eventArgs)));
   navigationManagerFunctions.listenForNavigationEvents((uri: string, intercepted: boolean) => {
     return DotNet.invokeMethodAsync('Microsoft.AspNetCore.Components.Electron', 'NotifyLocationChanged', uri, intercepted);
