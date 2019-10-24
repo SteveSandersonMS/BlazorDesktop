@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using Microsoft.Toolkit.Win32.UI.Controls.Interop.WinRT;
@@ -15,6 +14,8 @@ namespace Microsoft.AspNetCore.Components.Desktop
                 throw new ArgumentException($"{nameof(ContentRootResolver)} should only be used for local stream URIs");
             }
 
+            Console.WriteLine($"Resolving local stream URI {uri}");
+
             var localPath = uri.LocalPath;
             if (!localPath.StartsWith('/'))
             {
@@ -23,7 +24,7 @@ namespace Microsoft.AspNetCore.Components.Desktop
             localPath = localPath.Substring(1).Replace('/', Path.DirectorySeparatorChar);
 
             var root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var filePath = Path.Combine(root, localPath);
+            var filePath = Path.Combine(root, "wwwroot", localPath);
 
             if (File.Exists(filePath))
             {
@@ -31,7 +32,7 @@ namespace Microsoft.AspNetCore.Components.Desktop
             }
             else
             {
-                return null; // TODO: Is this how to indicate 404?
+                throw new FileNotFoundException($"Local stream URI '{uri}' does not correspond to an existing file on disk", filePath);
             }
         }
     }

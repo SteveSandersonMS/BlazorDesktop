@@ -1,4 +1,5 @@
 ﻿using Microsoft.Toolkit.Forms.UI.Controls;
+using Microsoft.Toolkit.Win32.UI.Controls.Interop.WinRT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,8 +22,24 @@ namespace Microsoft.AspNetCore.Components.Desktop
             Controls.Add(wvc);
             ((ISupportInitialize)wvc).EndInit();
 
+            wvc.AddInitializeScript(@"
+                function notifyHost(type, data) {
+                    window.external.notify(JSON.stringify({ type: type, data: data }));
+                }
+
+                window.addEventListener('error', function(event) {
+                    notifyHost('error', { message: event.message, filename: event.filename, lineno: event.lineno, colno: event.colno });
+                });
+            ");
+            wvc.ScriptNotify += HandleScriptNotify;
+
             wvc.IsScriptNotifyAllowed = true;
             wvc.NavigateToLocalStreamUri(new Uri(hostHtmlPath, UriKind.Relative), new ContentRootResolver());
+        }
+
+        private void HandleScriptNotify(object sender, WebViewControlScriptNotifyEventArgs e)
+        {
+            MessageBox.Show(e.Value);
         }
     }
 }

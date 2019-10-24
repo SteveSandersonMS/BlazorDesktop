@@ -8,7 +8,7 @@ namespace MyDesktopApp
         [STAThread]
         static void Main(string[] args)
         {
-            ComponentsDesktop.Run<Startup>("wwwroot/index.html", form =>
+            ComponentsDesktop.Run<Startup>("index.html", form =>
             {
                 form.Text = "MyDesktopApp";
             });
