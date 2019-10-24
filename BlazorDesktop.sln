@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNetCore.Compon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNetCore.Components.Desktop.JS", "src\Microsoft.AspNetCore.Components.Desktop.JS\Microsoft.AspNetCore.Components.Desktop.JS.csproj", "{877B55C3-E737-4CAD-9E61-0D018240B36C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{E8B044A2-41A9-4972-9395-84D242CA6AEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDesktopApp", "samples\MyDesktopApp\MyDesktopApp.csproj", "{49913E4F-4473-46EC-A280-99D96A77178C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,9 +50,22 @@ Global
 		{877B55C3-E737-4CAD-9E61-0D018240B36C}.Release|x64.Build.0 = Release|Any CPU
 		{877B55C3-E737-4CAD-9E61-0D018240B36C}.Release|x86.ActiveCfg = Release|Any CPU
 		{877B55C3-E737-4CAD-9E61-0D018240B36C}.Release|x86.Build.0 = Release|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Debug|x64.Build.0 = Debug|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Debug|x86.Build.0 = Debug|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Release|x64.ActiveCfg = Release|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Release|x64.Build.0 = Release|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Release|x86.ActiveCfg = Release|Any CPU
+		{49913E4F-4473-46EC-A280-99D96A77178C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8F61BF29-3276-4D63-AC0A-64EE55C19D57} = {4820553E-1752-4499-BEAA-7E8839A68A18}
 		{877B55C3-E737-4CAD-9E61-0D018240B36C} = {4820553E-1752-4499-BEAA-7E8839A68A18}
+		{49913E4F-4473-46EC-A280-99D96A77178C} = {E8B044A2-41A9-4972-9395-84D242CA6AEC}
 	EndGlobalSection
 EndGlobal
