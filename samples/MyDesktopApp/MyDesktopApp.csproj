@@ -11,4 +11,10 @@
     <ProjectReference Include="..\..\src\Microsoft.AspNetCore.Components.Desktop\Microsoft.AspNetCore.Components.Desktop.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

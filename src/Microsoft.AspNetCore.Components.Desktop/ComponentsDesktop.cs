@@ -11,7 +11,7 @@ namespace Microsoft.AspNetCore.Components.Desktop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var form = new RootForm();
+            var form = new RootForm(hostHtmlPath);
             configure?.Invoke(form);
             Application.Run(form);
         }
