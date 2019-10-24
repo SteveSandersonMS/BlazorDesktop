@@ -1,17 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29319.158
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4820553E-1752-4499-BEAA-7E8839A68A18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNetCore.Components.Desktop", "src\Microsoft.AspNetCore.Components.Desktop\Microsoft.AspNetCore.Components.Desktop.csproj", "{8F61BF29-3276-4D63-AC0A-64EE55C19D57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AspNetCore.Components.Desktop", "src\Microsoft.AspNetCore.Components.Desktop\Microsoft.AspNetCore.Components.Desktop.csproj", "{8F61BF29-3276-4D63-AC0A-64EE55C19D57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNetCore.Components.Desktop.JS", "src\Microsoft.AspNetCore.Components.Desktop.JS\Microsoft.AspNetCore.Components.Desktop.JS.csproj", "{877B55C3-E737-4CAD-9E61-0D018240B36C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AspNetCore.Components.Desktop.JS", "src\Microsoft.AspNetCore.Components.Desktop.JS\Microsoft.AspNetCore.Components.Desktop.JS.csproj", "{877B55C3-E737-4CAD-9E61-0D018240B36C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{E8B044A2-41A9-4972-9395-84D242CA6AEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDesktopApp", "samples\MyDesktopApp\MyDesktopApp.csproj", "{49913E4F-4473-46EC-A280-99D96A77178C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDesktopApp", "samples\MyDesktopApp\MyDesktopApp.csproj", "{49913E4F-4473-46EC-A280-99D96A77178C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E6446CEF-305B-4CC3-9008-793574080658}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +26,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8F61BF29-3276-4D63-AC0A-64EE55C19D57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -63,9 +65,15 @@ Global
 		{49913E4F-4473-46EC-A280-99D96A77178C}.Release|x86.ActiveCfg = Release|Any CPU
 		{49913E4F-4473-46EC-A280-99D96A77178C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8F61BF29-3276-4D63-AC0A-64EE55C19D57} = {4820553E-1752-4499-BEAA-7E8839A68A18}
 		{877B55C3-E737-4CAD-9E61-0D018240B36C} = {4820553E-1752-4499-BEAA-7E8839A68A18}
 		{49913E4F-4473-46EC-A280-99D96A77178C} = {E8B044A2-41A9-4972-9395-84D242CA6AEC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DAA00AC3-CE16-4EE4-A69B-571A6BC471D7}
 	EndGlobalSection
 EndGlobal

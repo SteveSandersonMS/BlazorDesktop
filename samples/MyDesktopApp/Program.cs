@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Blazor.Hosting;
+﻿using Microsoft.AspNetCore.Components.Desktop;
 
 namespace MyDesktopApp
 {
@@ -6,11 +6,7 @@ namespace MyDesktopApp
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            ComponentsDesktop.Run<Startup>("wwwroot/index.html");
         }
-
-        public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
-            BlazorWebAssemblyHost.CreateDefaultBuilder()
-                .UseBlazorStartup<Startup>();
     }
 }
