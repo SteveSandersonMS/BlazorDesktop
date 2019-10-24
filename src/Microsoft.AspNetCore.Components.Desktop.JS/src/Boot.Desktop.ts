@@ -5,7 +5,6 @@ import { setEventDispatcher } from '@browserjs/Rendering/RendererEventDispatcher
 import { internalFunctions as navigationManagerFunctions } from '@browserjs/Services/NavigationManager';
 import { renderBatch } from '@browserjs/Rendering/Renderer';
 import { decode } from 'base64-arraybuffer';
-import * as electron from 'electron';
 
 function boot() {
   setEventDispatcher((eventDescriptor, eventArgs) => DotNet.invokeMethodAsync('Microsoft.AspNetCore.Components.Electron', 'DispatchEvent', eventDescriptor, JSON.stringify(eventArgs)));
@@ -13,6 +12,7 @@ function boot() {
     return DotNet.invokeMethodAsync('Microsoft.AspNetCore.Components.Electron', 'NotifyLocationChanged', uri, intercepted);
   });
 
+  /*
   // Configure the mechanism for JS<->NET calls
   DotNet.attachDispatcher({
     beginInvokeDotNetFromJS: (callId: number, assemblyName: string | null, methodIdentifier: string, dotNetObjectId: number | null, argsJson: string) => {
@@ -49,6 +49,7 @@ function boot() {
   electron.ipcRenderer.on('JS.Error', (_, message) => {
     console.error(message);
   });
+  */
 }
 
 boot();

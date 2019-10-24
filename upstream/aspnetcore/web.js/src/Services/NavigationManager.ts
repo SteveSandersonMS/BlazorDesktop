@@ -1,4 +1,4 @@
-import '@dotnet/jsinterop';
+// import '@dotnet/jsinterop'; Not needed as it's imported by Boot.Desktop.ts
 import { resetScrollAfterNextBatch } from '../Rendering/Renderer';
 
 let hasRegisteredNavigationInterception = false;
