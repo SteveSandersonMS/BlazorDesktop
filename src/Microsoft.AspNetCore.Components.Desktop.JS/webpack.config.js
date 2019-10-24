@@ -11,7 +11,7 @@ module.exports = (env, args) => ({
         rules: [{ test: /\.ts?$/, loader: 'ts-loader' }]
     },
     entry: {
-        'components.desktop': './src/Boot.Desktop.ts'
+        'blazor.desktop': './src/Boot.Desktop.ts'
     },
     output: { path: path.join(__dirname, '/dist'), filename: '[name].js' }
 });
