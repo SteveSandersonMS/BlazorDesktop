@@ -6,7 +6,10 @@ namespace MyDesktopApp
     {
         public static void Main(string[] args)
         {
-            ComponentsDesktop.Run<Startup>("wwwroot/index.html");
+            ComponentsDesktop.Run<Startup>("wwwroot/index.html", form =>
+            {
+                form.Text = "MyDesktopApp";
+            });
         }
     }
 }
