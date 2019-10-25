@@ -47,7 +47,7 @@ namespace Microsoft.AspNetCore.Components.Desktop
         {
             localPath = localPath.Replace('/', Path.DirectorySeparatorChar);
 
-            var root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var root = Path.GetDirectoryName(Directory.GetCurrentDirectory());
             var filePath = Path.Combine(root, "wwwroot", localPath);
 
             if (File.Exists(filePath))
