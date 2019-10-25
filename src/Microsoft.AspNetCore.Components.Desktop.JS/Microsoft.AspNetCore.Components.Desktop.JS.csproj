@@ -24,7 +24,7 @@
     <Exec Command="npm install" />
   </Target>
 
-  <Target Name="RunWebpack" AfterTargets="ResolveReferences" Inputs="@(WebpackInputs)" Outputs="dist\components.electron.js" DependsOnTargets="EnsureNpmRestored">
+  <Target Name="RunWebpack" AfterTargets="ResolveReferences" Inputs="@(WebpackInputs)" Outputs="dist\blazor.desktop.js" DependsOnTargets="EnsureNpmRestored">
     <Exec Command="npm run build:debug" Condition="'$(Configuration)' == 'Debug'" />
     <Exec Command="npm run build:production" Condition="'$(Configuration)' != 'Debug'" />
   </Target>

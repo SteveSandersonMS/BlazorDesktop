@@ -97,8 +97,8 @@ namespace Microsoft.AspNetCore.Components.Desktop
             //
             // 1. dotnet starts listening for components:init
             // 2. dotnet sends components:init repeatedly
-            // 3. electron starts listening for components:init
-            // 4. electron sends a components:init once it has received one from dotnet - it's ready
+            // 3. JS starts listening for components:init
+            // 4. JS sends a components:init once it has received one from dotnet - it's ready
             // 5. dotnet receives components:init - it's ready
             //
             // Because either side might take any amount of time to start listening,
@@ -145,11 +145,11 @@ namespace Microsoft.AspNetCore.Components.Desktop
                     DotNetDispatcher.BeginInvokeDotNet(
                         DesktopJSRuntime,
                         new DotNetInvocationInfo(
-                            assemblyName: (string)argsArray[1],
-                            methodIdentifier: (string)argsArray[2],
-                            dotNetObjectId: (long)argsArray[3],
-                            callId: (string)argsArray[0]),
-                        (string)argsArray[4]);
+                            assemblyName: ((JsonElement)argsArray[1]).GetString(),
+                            methodIdentifier: ((JsonElement)argsArray[2]).GetString(),
+                            dotNetObjectId: ((JsonElement)argsArray[3]).GetInt64(),
+                            callId: ((JsonElement)argsArray[0]).GetString()),
+                        ((JsonElement)argsArray[4]).GetString());
                 }, args);
             });
 

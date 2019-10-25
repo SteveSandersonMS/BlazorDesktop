@@ -16,7 +16,7 @@ namespace Microsoft.AspNetCore.Components.Desktop
 
     internal class DesktopRenderer : Renderer
     {
-        private const int RendererId = 0; // Not relevant, since we have only one renderer in Electron
+        private const int RendererId = 0; // Not relevant, since we have only one renderer in Desktop
         private readonly IPC _ipc;
         private readonly IJSRuntime _jsRuntime;
         private static readonly Type _writer;
@@ -92,7 +92,7 @@ namespace Microsoft.AspNetCore.Components.Desktop
 
             _ipc.Send("JS.RenderBatch", RendererId, base64);
 
-            // TODO: Consider finding a way to get back a completion message from the Electron side
+            // TODO: Consider finding a way to get back a completion message from the Desktop side
             // in case there was an error. We don't really need to wait for anything to happen, since
             // this is not prerendering and we don't care how quickly the UI is updated, but it would
             // be desirable to flow back errors.

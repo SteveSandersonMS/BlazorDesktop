@@ -8,9 +8,9 @@ import { decode } from 'base64-arraybuffer';
 import * as ipc from './IPC';
 
 function boot() {
-  setEventDispatcher((eventDescriptor, eventArgs) => DotNet.invokeMethodAsync('Microsoft.AspNetCore.Components.Electron', 'DispatchEvent', eventDescriptor, JSON.stringify(eventArgs)));
+  setEventDispatcher((eventDescriptor, eventArgs) => DotNet.invokeMethodAsync('Microsoft.AspNetCore.Components.Desktop', 'DispatchEvent', eventDescriptor, JSON.stringify(eventArgs)));
   navigationManagerFunctions.listenForNavigationEvents((uri: string, intercepted: boolean) => {
-    return DotNet.invokeMethodAsync('Microsoft.AspNetCore.Components.Electron', 'NotifyLocationChanged', uri, intercepted);
+    return DotNet.invokeMethodAsync('Microsoft.AspNetCore.Components.Desktop', 'NotifyLocationChanged', uri, intercepted);
   });
 
   // Configure the mechanism for JS<->NET calls

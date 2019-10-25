@@ -11,7 +11,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
 {
     // TODO: We should consider *not* having this type of infrastructure in the .Server
     // project, but instead in some new project called .Remote or similar, since it
-    // would also be used in Electron and possibly WebWorker cases.
+    // would also be used in Desktop and possibly WebWorker cases.
 
     /// <summary>
     /// Provides a custom binary serializer for <see cref="RenderBatch"/> instances.
