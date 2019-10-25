@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Components.Desktop
 {
@@ -18,11 +19,11 @@ namespace Microsoft.AspNetCore.Components.Desktop
             _webView.ScriptNotify += HandleScriptNotify;
         }
 
-        public void Send(string eventName, params object[] args)
+        public async Task Send(string eventName, params object[] args)
         {
             try
             {
-                _webView.InvokeScript("_invokeIpc", eventName, JsonSerializer.Serialize(args));
+                await _webView.InvokeScriptAsync("_invokeIpc", eventName, JsonSerializer.Serialize(args));
             }
             catch (Exception ex)
             {
