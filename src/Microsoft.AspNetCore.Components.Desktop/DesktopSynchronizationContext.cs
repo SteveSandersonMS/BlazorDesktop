@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Components.Desktop
 {
@@ -12,9 +11,9 @@ namespace Microsoft.AspNetCore.Components.Desktop
 
         private readonly WorkQueue _work;
 
-        public DesktopSynchronizationContext()
+        public DesktopSynchronizationContext(CancellationToken cancellationToken)
         {
-            _work = new WorkQueue();
+            _work = new WorkQueue(cancellationToken);
         }
 
         public override SynchronizationContext CreateCopy()
@@ -60,9 +59,11 @@ namespace Microsoft.AspNetCore.Components.Desktop
         private class WorkQueue
         {
             private readonly Thread _thread;
+            private readonly CancellationToken _cancellationToken;
 
-            public WorkQueue()
+            public WorkQueue(CancellationToken cancellationToken)
             {
+                _cancellationToken = cancellationToken;
                 _thread = new Thread(ProcessQueue);
                 _thread.Start();
             }
@@ -81,9 +82,13 @@ namespace Microsoft.AspNetCore.Components.Desktop
                     WorkItem item;
                     try
                     {
-                        item = Queue.Take();
+                        item = Queue.Take(_cancellationToken);
                     }
                     catch (InvalidOperationException)
+                    {
+                        return;
+                    }
+                    catch (OperationCanceledException)
                     {
                         return;
                     }

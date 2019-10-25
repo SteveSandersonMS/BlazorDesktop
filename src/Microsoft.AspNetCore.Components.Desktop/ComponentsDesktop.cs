@@ -33,12 +33,13 @@ namespace Microsoft.AspNetCore.Components.Desktop
                 UnhandledException(exception);
             };
 
+            CancellationTokenSource appLifetimeCts = new CancellationTokenSource();
             Task.Factory.StartNew(async() =>
             {
                 try
                 {
                     var ipc = form.CreateChannel(hostHtmlPath);
-                    await RunAsync<TStartup>(ipc);
+                    await RunAsync<TStartup>(ipc, appLifetimeCts.Token);
                 }
                 catch (Exception ex)
                 {
@@ -47,7 +48,14 @@ namespace Microsoft.AspNetCore.Components.Desktop
                 }
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 
-            Application.Run(form);
+            try
+            {
+                Application.Run(form);
+            }
+            finally
+            {
+                appLifetimeCts.Cancel();
+            }
         }
 
         private static void UnhandledException(Exception ex)
@@ -55,11 +63,11 @@ namespace Microsoft.AspNetCore.Components.Desktop
             MessageBox.Show($"{ex.Message}\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private static async Task RunAsync<TStartup>(IPC ipc)
+        private static async Task RunAsync<TStartup>(IPC ipc, CancellationToken appLifetime)
         {
             DesktopJSRuntime = new DesktopJSRuntime(ipc);
             await PerformHandshakeAsync(ipc);
-            AttachJsInterop(ipc);
+            AttachJsInterop(ipc, appLifetime);
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddLogging(configure => configure.AddConsole());
@@ -132,9 +140,9 @@ namespace Microsoft.AspNetCore.Components.Desktop
             Log("Interop connected");
         }
 
-        private static void AttachJsInterop(IPC ipc)
+        private static void AttachJsInterop(IPC ipc, CancellationToken appLifetime)
         {
-            var desktopSynchronizationContext = new DesktopSynchronizationContext();
+            var desktopSynchronizationContext = new DesktopSynchronizationContext(appLifetime);
             SynchronizationContext.SetSynchronizationContext(desktopSynchronizationContext);
 
             ipc.On("BeginInvokeDotNetFromJS", args =>
