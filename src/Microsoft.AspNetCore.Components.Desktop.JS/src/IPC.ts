@@ -30,7 +30,7 @@ export function once(eventName: string, callback: Callback): void {
 }
 
 export function send(eventName: string, args: any): void {
-    (window as any).external.notify(`${eventName} ${JSON.stringify(args)}`);
+    (window as any).external.notify(`ipc:${eventName} ${JSON.stringify(args)}`);
 }
 
 (window as any)._invokeIpc = function(eventName: string, argsJson: string) {
