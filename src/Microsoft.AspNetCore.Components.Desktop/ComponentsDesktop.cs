@@ -1,4 +1,8 @@
-﻿using Microsoft.JSInterop.Infrastructure;
+﻿using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
+using Microsoft.JSInterop.Infrastructure;
 using System;
 using System.Diagnostics;
 using System.Text.Json;
@@ -13,6 +17,7 @@ namespace Microsoft.AspNetCore.Components.Desktop
         internal static string InitialUriAbsolute { get; private set; }
         internal static string BaseUriAbsolute { get; private set; }
         internal static DesktopJSRuntime DesktopJSRuntime { get; private set; }
+        internal static DesktopRenderer DesktopRenderer { get; private set; }
 
         public static void Run<TStartup>(string hostHtmlPath, Action<Form> configure = null)
         {
@@ -23,20 +28,64 @@ namespace Microsoft.AspNetCore.Components.Desktop
             var form = new RootForm();
             configure?.Invoke(form);
 
+            DesktopSynchronizationContext.UnhandledException += (sender, exception) =>
+            {
+                UnhandledException(exception);
+            };
+
             Task.Factory.StartNew(async() =>
             {
-                var ipc = form.CreateChannel(hostHtmlPath);
-                await RunAsync(ipc);
+                try
+                {
+                    var ipc = form.CreateChannel(hostHtmlPath);
+                    await RunAsync<TStartup>(ipc);
+                }
+                catch (Exception ex)
+                {
+                    UnhandledException(ex);
+                    throw;
+                }
             }, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
 
             Application.Run(form);
         }
 
-        private static async Task RunAsync(IPC ipc)
+        private static void UnhandledException(Exception ex)
+        {
+            MessageBox.Show($"{ex.Message}\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private static async Task RunAsync<TStartup>(IPC ipc)
         {
             DesktopJSRuntime = new DesktopJSRuntime(ipc);
             await PerformHandshakeAsync(ipc);
             AttachJsInterop(ipc);
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddLogging(configure => configure.AddConsole());
+            serviceCollection.AddSingleton<NavigationManager>(DesktopNavigationManager.Instance);
+            serviceCollection.AddSingleton<IJSRuntime>(DesktopJSRuntime);
+            serviceCollection.AddSingleton<INavigationInterception, DesktopNavigationInterception>();
+
+            var startup = new ConventionBasedStartup(Activator.CreateInstance(typeof(TStartup)));
+            startup.ConfigureServices(serviceCollection);
+
+            var services = serviceCollection.BuildServiceProvider();
+            var builder = new DesktopApplicationBuilder(services);
+            startup.Configure(builder, services);
+
+            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+            DesktopRenderer = new DesktopRenderer(services, ipc, loggerFactory);
+            DesktopRenderer.UnhandledException += (sender, exception) =>
+            {
+                Console.Error.WriteLine(exception);
+            };
+
+            foreach (var rootComponent in builder.Entries)
+            {
+                _ = DesktopRenderer.AddComponentAsync(rootComponent.componentType, rootComponent.domElementSelector);
+            }
         }
 
         private static async Task PerformHandshakeAsync(IPC ipc)
@@ -86,7 +135,6 @@ namespace Microsoft.AspNetCore.Components.Desktop
         private static void AttachJsInterop(IPC ipc)
         {
             var desktopSynchronizationContext = new DesktopSynchronizationContext();
-
             SynchronizationContext.SetSynchronizationContext(desktopSynchronizationContext);
 
             ipc.On("BeginInvokeDotNetFromJS", args =>
@@ -112,7 +160,7 @@ namespace Microsoft.AspNetCore.Components.Desktop
                     var argsArray = (object[])state;
                     DotNetDispatcher.EndInvokeJS(
                         DesktopJSRuntime,
-                        (string)argsArray[2]);
+                        ((JsonElement)argsArray[2]).GetString());
                 }, args);
             });
         }

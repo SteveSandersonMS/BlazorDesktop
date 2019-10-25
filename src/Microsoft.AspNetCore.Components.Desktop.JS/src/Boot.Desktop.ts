@@ -33,20 +33,20 @@ function boot() {
       navigationManagerFunctions.getBaseURI()]);
   });
 
-  ipc.on('JS.BeginInvokeJS', (_, asyncHandle, identifier, argsJson) => {
+  ipc.on('JS.BeginInvokeJS', (asyncHandle, identifier, argsJson) => {
     DotNet.jsCallDispatcher.beginInvokeJSFromDotNet(asyncHandle, identifier, argsJson);
   });
 
-  ipc.on('JS.EndInvokeDotNet', (_, callId, success, resultOrError) => {
+  ipc.on('JS.EndInvokeDotNet', (callId, success, resultOrError) => {
     DotNet.jsCallDispatcher.endInvokeDotNetFromJS(callId, success, resultOrError);
   });
 
-  ipc.on('JS.RenderBatch', (_, rendererId, batchBase64) => {
+  ipc.on('JS.RenderBatch', (rendererId, batchBase64) => {
     var batchData = new Uint8Array(decode(batchBase64));
     renderBatch(rendererId, new OutOfProcessRenderBatch(batchData));
   });
 
-  ipc.on('JS.Error', (_, message) => {
+  ipc.on('JS.Error', (message) => {
     console.error(message);
   });
 }
