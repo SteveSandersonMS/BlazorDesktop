@@ -47,8 +47,7 @@ namespace Microsoft.AspNetCore.Components.Desktop
         {
             localPath = localPath.Replace('/', Path.DirectorySeparatorChar);
 
-            var root = Path.GetDirectoryName(Directory.GetCurrentDirectory());
-            var filePath = Path.Combine(root, "wwwroot", localPath);
+            var filePath = Path.Combine(ContentRoot.Value, localPath);
 
             if (File.Exists(filePath))
             {
@@ -59,5 +58,23 @@ namespace Microsoft.AspNetCore.Components.Desktop
                 throw new FileNotFoundException($"Local stream URI '{uri}' does not correspond to an existing file on disk", filePath);
             }
         }
+
+        private Lazy<string> ContentRoot = new Lazy<string>(() =>
+        {
+            var startDir = Directory.GetCurrentDirectory();
+            var dir = startDir;
+            while (!string.IsNullOrEmpty(dir))
+            {
+                var candidate = Path.Combine(dir, "wwwroot");
+                if (Directory.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                dir = Path.GetDirectoryName(dir);
+            }
+
+            throw new DirectoryNotFoundException($"Could not find wwwroot in '{startDir}' or any ancestor directory");
+        });
     }
 }
